@@ -1,0 +1,431 @@
+1. Display the Name and Title of the Employee who do not have a manager.
+  select ename,job from emp where mgr is null;
++-------+-----------+
+| ename | job       |
++-------+-----------+
+| KING  | PRESIDENT |
++-------+-----------+
+
+2. The sales department is simplifying the pricing policy for all products. The new base price
+is increasing by the lesser of 0.5 %. Analyze the difference in the two prices.
+
+
+3. Display the employee details who have joined on the same day when KING has joined.
+
+mysql> select * from emp where hiredate=(select hiredate from emp where ename='KING');
++-------+-------+--------+-----------+------+------------+------+------+--------+---------+-----------+--------+------------+----------+
+| EMPNO | ENAME | GENDER | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME | PWD    | PHONE      | isActive |
++-------+-------+--------+-----------+------+------------+------+------+--------+---------+-----------+--------+------------+----------+
+|  7839 | KING  | M      | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 |       1 | KING      | r50mpm | 7132300081 |        1 |
++-------+-------+--------+-----------+------+------------+------+------+--------+---------+-----------+--------+------------+----------+
+1 row in set (0.01 sec)
+
+
+
+4. Find out the difference between maximum salary and salary earned by employee in deptno 10.
+mysql> SELECT MAX(sal)-MIN(sal) FROM emp WHERE deptno=10;
++-------------------+
+| MAX(sal)-MIN(sal) |
++-------------------+
+|              3700 |
++-------------------+
+1 row in set (0.01 sec)
+
+
+5. Find out the difference in Rs. Between average earning of dept 20 and 30.
+
+mysql> SELECT (SELECT AVG(SAL) FROM EMP WHERE DEPTNO=20)-(SELECT AVG(SAL) FROM EMP WHERE DEPTNO=30);
++---------------------------------------------------------------------------------------+
+| (SELECT AVG(SAL) FROM EMP WHERE DEPTNO=20)-(SELECT AVG(SAL) FROM EMP WHERE DEPTNO=30) |
++---------------------------------------------------------------------------------------+
+|                                                                              569.7917 |
++---------------------------------------------------------------------------------------+
+
+6. Display name, salary, and comm. For employee whose comm. > 5% of salary.
+
+mysql> SELECT ENAME,SAL,COMM FROM EMP WHERE COMM>0.05*SAL;
++--------+------+------+
+| ENAME  | SAL  | COMM |
++--------+------+------+
+| ALLEN  | 1600 |  300 |
+| WARD   | 1250 |  500 |
+| MARTIN | 1250 | 1400 |
+| GRASS  | 2575 | 2700 |
+| MILLER | 1300 | 1300 |
+| AARUSH | 1350 | 2700 |
+| ALEX   | 1250 |  500 |
++--------+------+------+
+
+7. Find out the employees whose salary is less than the average salary for dept 20.
+
+
+
+mysql> SELECT * FROM EMP WHERE SAL<(SELECT AVG(SAL) FROM EMP WHERE DEPTNO=20);
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+| EMPNO | ENAME    | GENDER | JOB                 | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | PHONE      | isActive |
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+|  6001 | GITA     | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     30 |       1 | GITA         | sales@2017 | NULL       |        1 |
+|  6129 | VRUSHALI | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     50 |       1 | VRUSHALI     | PUN@8877   | NULL       |        1 |
+|  6473 | SHARMIN  | F      | Public Relation     | 7920 | 1981-07-19 | 1750 | NULL |     20 |       1 | SHARMIN      | a12recmpm  | NULL       |        1 |
+|  6781 | BANDISH  | F      | Public Relation     | 7920 | 1981-07-19 | 1750 | NULL |     20 |       1 | BANDISH      | a12recmpm  | NULL       |        1 |
+|  7369 | SMITH    | M      | CLERK               | 7902 | 1980-12-17 |  800 | NULL |     20 |       2 | TRITONE      | a12recmpm  | 7032300023 |        0 |
+|  7421 | THOMAS   | M      | CLERK               | 7920 | 1981-07-19 | 1750 | NULL |     10 |       1 | THOMAS       | r50mpm     | 7032300011 |   
+
+8. Display information of employee who has no people reporting to them.
+
+ysql> SELECT * FROM EMP WHERE EMPNO NOT IN (SELECT MGR FROM EMP WHERE MGR IS NOT NULL);
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+| EMPNO | ENAME    | GENDER | JOB                 | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | PHONE      | isActive |
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+|  6001 | GITA     | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     30 |       1 | GITA         | sales@2017 | NULL       |        1 |
+|  6129 | VRUSHALI | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     50 |       1 | VRUSHALI     | PUN@8877   | NULL       |        1 |
+|  6473 | SHARMIN  | F      | Public Relation     | 7920 | 1981-07-19 | 1750 | NULL |     20 |       1 | SHARMIN      | a12recmpm  | NULL       |        1 |
+|  6781 | BANDISH  | F      | Public Relation     | 7920 | 1981-07-19 | 1750 | NULL |     20 |       1 | BANDISH      | a12recmpm  | NULL       |        1 |
+|  7369 | SMITH    | M      | CLERK               | 7902 | 1980-12-17 |  800 | NULL |     20 |       2 | TRITONE      | a12recmpm  | 7032300023 |        0 |
+|  7415 | AARAV    | M      | CLERK               | 7902 | 1981-12-31 | 3350 | NULL |     10 |    NULL | AARAV        | NULL       | 7032300084 |        0 |
+|  7421 | THOMAS   | M      | CLERK               | 7920 | 1981-07-19 | 1750 | NULL |     10 |       1 | THOMAS       | r50mpm     | 7032300011 |        0 |
+|  7499 | ALLEN    | M      | SALESMAN            | 7698 | 1981-02-20 | 1600 |  300 |     30 |       4 | ALWAYS TESTE | sales@2017 | 7032300096 |        1 |
+|  7521 | WARD     | M      | SALESMAN            | 7698 | 1981-02-22 | 1250 |  500 |     30 |       1 | WARD         | sales@2017 | 7132300034 |        1 |
+|  7654 | MARTIN   | M      | SALESMAN            | 7698 | 1981-09-28 | 1250 | 1400 |     30 |       6 | LIFE RACER   | sales@2017 | 7132300050 |        1 |
+|  7840 | FRED     | M      | vice PRESIDENT      | 7839 | 1983-08-09 | 5000 | NULL |     20 |       1 | SAND STONE   | a12recmpm  | NULL       |        1 |
+|  7844 | TURNER   | M      | SALESMAN            | 7698 | 1981-09-08 | 1500 |    0 |     30 |       5 | SAND DUST    | sales@2017 | NULL       |        1 |
+|  7876 | ADAMS    | M      | CLERK               | 7788 | 1983-01-12 | 1100 | NULL |     20 |       1 | CRAZY ANYONE | a12recmpm  | 7132300086 |        1 |
+
+9. Display information of employees who is having maximum number of people reporting to
+Them.
+mysql> SELECT MGR FROM EMP GROUP BY MGR HAVING COUNT(*)=(SELECT MAX(CNT) FROM (SELECT COUNT(*) CNT FROM EMP GROUP BY MGR) T);
++------+
+| MGR  |
++------+
+| 7920 |
+
+10. Give a query to concatenate empno, ename and mgr with spaces between.
+mysql> SELECT CONCAT(EMPNO,' ',ENAME,' ',MGR) FROM EMP;
++---------------------------------+
+| CONCAT(EMPNO,' ',ENAME,' ',MGR) |
++---------------------------------+
+| 6001 GITA 7920                  |
+| 6129 VRUSHALI 7920              |
+| 6473 SHARMIN 7920               |
+| 6781 BANDISH 7920               |
+| 7369 SMITH 7902                 |
+| 7415 AARAV 7902                 |
+| 7421 THOMAS 7920                |
+| 7499 ALLEN 7698                 |
+
+11. List the employee who is hired the earliest and least.
+
+mysql> SELECT * FROM EMP WHERE HIREDATE=(SELECT MIN(HIREDATE) FROM EMP) OR HIREDATE=(SELECT MAX(HIREDATE) FROM EMP);
++-------+--------+--------+----------------+------+------------+------+------+--------+---------+------------+------------+-------+----------+
+| EMPNO | ENAME  | GENDER | JOB            | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME  | PWD        | PHONE | isActive |
++-------+--------+--------+----------------+------+------------+------+------+--------+---------+------------+------------+-------+----------+
+|  7840 | FRED   | M      | vice PRESIDENT | 7839 | 1983-08-09 | 5000 | NULL |     20 |       1 | SAND STONE | a12recmpm  | NULL  |        1 |
+|  7888 | Ruhan  | M      | Network        | 7888 | 1983-08-09 | 2000 | NULL |     60 |       1 | Ruhan      | BRD@1122   | NULL  |        1 |
+|  7889 | Neel   | M      | vice PRESIDENT | 7839 | 1983-08-09 | 1000 | NULL |     60 |       0 | Neel       | BRD@1122   | NULL  |        1 |
+|  7920 | GRASS  | M      | SALESMAN       | 7919 | 1980-02-14 | 2575 | 2700 |     30 |       5 | GRASS      | sales@2017 | NULL  |        1 |
+
+12. What length of longest ename and by how many characters is it long than its nearest one?
+
+mysql> SELECT MAX(LENGTH(ENAME))-(SELECT MAX(LENGTH(ENAME)) FROM EMP WHERE LENGTH(ENAME)<(SELECT MAX(LENGTH(ENAME)) FROM EMP)) FROM EMP;
++------------------------------------------------------------------------------------------------------------------+
+| MAX(LENGTH(ENAME))-(SELECT MAX(LENGTH(ENAME)) FROM EMP WHERE LENGTH(ENAME)<(SELECT MAX(LENGTH(ENAME)) FROM EMP)) |
++------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                1 |
++------------------------------------------------------------------------------------------------------------------+
+
+13. Which employees earn less than 30% of president s salary?
+
+mysql> SELECT * FROM EMP WHERE SAL<0.3*(SELECT SAL FROM EMP WHERE JOB='PRESIDENT');
++-------+--------+--------+----------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+| EMPNO | ENAME  | GENDER | JOB            | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | PHONE      | isActive |
++-------+--------+--------+----------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+|  7369 | SMITH  | M      | CLERK          | 7902 | 1980-12-17 |  800 | NULL |     20 |       2 | TRITONE      | a12recmpm  | 7032300023 |        0 |
+|  7521 | WARD   | M      | SALESMAN       | 7698 | 1981-02-22 | 1250 |  500 |     30 |       1 | WARD         | sales@2017 | 7132300034 |        1 |
+|  7654 | MARTIN | M      | SALESMAN       | 7698 | 1981-09-28 | 1250 | 1400 |     30 |       6 | LIFE RACER   | sales@2017 | 7132300050 |        1 |
+|  7876 | ADAMS  | M      | CLERK          | 7788 | 1983-01-12 | 1100 | NULL |     20 |       1 | CRAZY ANYONE | a12recmpm  | 7132300086 |        1 |
+|  7889 | Neel   | M      | vice PRESIDENT | 7839 | 1983-08-09 | 1000 | NULL |     60 |       0 | Neel         | BRD@1122   | NULL       
+
+14. List the department spending highest on salary.
+mysql> SELECT DEPTNO FROM EMP GROUP BY DEPTNO ORDER BY SUM(SAL) DESC LIMIT 1;
++--------+
+| DEPTNO |
++--------+
+|     30 |
++--------+
+1 row in set (0.01 sec)
+
+15. List the department having least number of staff.
+mysql> SELECT DEPTNO FROM EMP GROUP BY DEPTNO ORDER BY COUNT(*) LIMIT 1;
++--------+
+| DEPTNO |
++--------+
+|     60 |
++--------+
+1 row in set (0.00 sec)
+
+16. List the department having neither the highest not the lowest of avg salary.
+mysql> SELECT DEPTNO FROM EMP GROUP BY DEPTNO HAVING AVG(SAL) NOT IN ((SELECT MAX(AVG_SAL) FROM (SELECT AVG(SAL) AVG_SAL FROM EMP GROUP BY DEPTNO) T),(SELECT MIN(AVG_SAL) FROM (SELECT AVG(SAL) AVG_SAL FROM EMP GROUP BY DEPTNO) T));
++--------+
+| DEPTNO |
++--------+
+|     20 |
+|     30 |
+|     50 |
++--------+
+
+17. Display details of all employees as Mr. Ford works under <manger name>.
+mysql> SELECT CONCAT('MR. ',E.ENAME,' WORKS UNDER ',M.ENAME) FROM EMP E JOIN EMP M ON E.MGR=M.EMPNO WHERE E.ENAME='FORD';
++------------------------------------------------+
+| CONCAT('MR. ',E.ENAME,' WORKS UNDER ',M.ENAME) |
++------------------------------------------------+
+| MR. FORD WORKS UNDER JONES                     |
++------------------------------------------------+
+1 row in set (0.02 sec)
+
+18. Display employee information who have joined the organization before 'BLAKE'
+mysql> SELECT * FROM EMP WHERE HIREDATE<(SELECT HIREDATE FROM EMP WHERE ENAME='BLAKE');
++-------+--------+--------+----------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+| EMPNO | ENAME  | GENDER | JOB      | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | PHONE      | isActive |
++-------+--------+--------+----------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+|  7369 | SMITH  | M      | CLERK    | 7902 | 1980-12-17 |  800 | NULL |     20 |       2 | TRITONE      | a12recmpm  | 7032300023 |        0 |
+|  7499 | ALLEN  | M      | SALESMAN | 7698 | 1981-02-20 | 1600 |  300 |     30 |       4 | ALWAYS TESTE | sales@2017 | 7032300096 |        1 |
+|  7521 | WARD   | M      | SALESMAN | 7698 | 1981-02-22 | 1250 |  500 |     30 |       1 | WARD         | sales@2017 | 7132300034 |        1 |
+
+19. Display employee information that has joined the organization before their subordinates.
+mysql> SELECT DISTINCT E.* FROM EMP E JOIN EMP S ON E.EMPNO=S.MGR WHERE E.HIREDATE<S.HIREDATE;
++-------+-------+--------+-----------+------+------------+------+------+--------+---------+------------+------------+------------+----------+
+| EMPNO | ENAME | GENDER | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME  | PWD        | PHONE      | isActive |
++-------+-------+--------+-----------+------+------------+------+------+--------+---------+------------+------------+------------+----------+
+|  7920 | GRASS | M      | SALESMAN  | 7919 | 1980-02-14 | 2575 | 2700 |     30 |       5 | GRASS      | sales@2017 | NULL       |        1 |
+|  7902 | FORD  | M      | ANALYST   | 7566 | 1981-12-03 | 3000 | NULL |     20 |       4 | CONBRIO    | a12recmpm  | NULL       |        0 |
+|  7698 | BLAKE | M      | MANAGER   | 7839 | 1981-05-01 | 2850 | NULL |     30 |       1 | BIG BEN    | sales@2017 | 7132300027 |        1 |
+|  7566 | JONES | M      | MANAGER   | 7839 | 1981-04-02 | 2975 | NULL |     20 |       4 | HONEYCOMB  | a12recmpm  | 7132300039 |        1 |
+|  7839 | KING  | M      | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 |       1 | KING       | r50mpm     | 7132300081 |        1 |
+
+20. List the employee (s) who earns the highest.
+mysql> SELECT * FROM EMP WHERE SAL=(SELECT MAX(SAL) FROM EMP);
++-------+-------+--------+----------------+------+------------+------+------+--------+---------+------------+-----------+------------+----------+
+| EMPNO | ENAME | GENDER | JOB            | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME  | PWD       | PHONE      | isActive |
++-------+-------+--------+----------------+------+------------+------+------+--------+---------+------------+-----------+------------+----------+
+|  7839 | KING  | M      | PRESIDENT      | NULL | 1981-11-17 | 5000 | NULL |     10 |       1 | KING       | r50mpm    | 7132300081 |        1 |
+|  7840 | FRED  | M      | vice PRESIDENT | 7839 | 1983-08-09 | 5000 | NULL |     20 |       1 | SAND STONE | a12recmpm | NULL       |        1 |
++-------+-------+--------+----------------+------+------------+------+------+--------+---------+------------+-----------+---
+
+21. List the mgr in dept 10 along with their dept details as well manager refers to anyone to
+whom at least 1 person reports.
+mysql> SELECT D.*,E.* FROM EMP E JOIN DEPT D ON E.DEPTNO=D.DEPTNO WHERE E.DEPTNO=10 AND E.EMPNO IN (SELECT MGR FROM EMP);
++--------+------------+----------+--------+------------+-------+-------+--------+-----------+------+------------+------+------+--------+---------+-----------+--------+------------+----------+
+| DEPTNO | DNAME      | LOC      | PWD    | STARTEDON  | EMPNO | ENAME | GENDER | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME | PWD    | PHONE      | isActive |
++--------+------------+----------+--------+------------+-------+-------+--------+-----------+------+------------+------+------+--------+---------+-----------+--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK | r50mpm | 24/03/1989 |  7782 | CLARK | M      | MANAGER   | 7839 | 1981-06-09 | 2450 | NULL |     10 |       3 | CLARK     | r50mpm | 7032300001 |        1 |
+
+22. In which year did the most people join the organization? Display the year and the number
+of employees.
+mysql> SELECT YEAR(HIREDATE),COUNT(*) FROM EMP GROUP BY YEAR(HIREDATE) ORDER BY COUNT(*) DESC LIMIT 1;
++----------------+----------+
+| YEAR(HIREDATE) | COUNT(*) |
++----------------+----------+
+|           1981 |       19 |
++----------------+----------+
+
+23. List number, name, job, manager number and manager’s job of each employee reporting
+to them
+mysql> SELECT E.EMPNO,E.ENAME,E.JOB,E.MGR,M.JOB FROM EMP E LEFT JOIN EMP M ON E.MGR=M.EMPNO;
++-------+----------+---------------------+------+-----------+
+| EMPNO | ENAME    | JOB                 | MGR  | JOB       |
++-------+----------+---------------------+------+-----------+
+|  6001 | GITA     | Compliance officers | 7920 | SALESMAN  |
+|  6129 | VRUSHALI | Compliance officers | 7920 | SALESMAN  |
+|  6473 | SHARMIN  | Public Relation     | 7920 | SALESMAN  |
+|  6781 | BANDISH  | Public Relation     | 7920 | SALESMAN  |
+|  7369 | SMITH    | CLERK               | 7902 | ANALYST   |
+|  7415 | AARAV    | CLERK               | 7902 | ANALYST   |
+|  7421 | THOMAS   | CLERK               | 7920 | SALESMAN  |
+|  7499 | ALLEN    | SALESMAN            | 7698 | MANAGER   |
+|  7521 | WARD     | SALESMAN            | 7698 | MANAGER   |
+
+24. Display information about employees who have the maximum number of employees
+reporting to him
+mysql> SELECT * FROM EMP WHERE EMPNO IN (SELECT MGR FROM EMP GROUP BY MGR HAVING COUNT(*)=(SELECT MAX(CNT) FROM (SELECT COUNT(*) CNT FROM EMP GROUP BY MGR) T));
++-------+-------+--------+----------+------+------------+------+------+--------+---------+-----------+------------+-------+----------+
+| EMPNO | ENAME | GENDER | JOB      | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME | PWD        | PHONE | isActive |
++-------+-------+--------+----------+------+------------+------+------+--------+---------+-----------+------------+-------+----------+
+|  7920 | GRASS | M      | SALESMAN | 7919 | 1980-02-14 | 2575 | 2700 |     30 |       5 | GRASS     | sales@2017 | NULL  |        1 |
++-------+-------+--------+----------+------+------------+------+------+--------+---------+-----------+------------+-------+----------+
+
+25. Display the details of all employees who report to BLAKE
+mysql> SELECT * FROM EMP WHERE MGR=(SELECT EMPNO FROM EMP WHERE ENAME='BLAKE');
++-------+--------+--------+----------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+| EMPNO | ENAME  | GENDER | JOB      | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | PHONE      | isActive |
++-------+--------+--------+----------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+|  7499 | ALLEN  | M      | SALESMAN | 7698 | 1981-02-20 | 1600 |  300 |     30 |       4 | ALWAYS TESTE | sales@2017 | 7032300096 |        1 |
+|  7521 | WARD   | M      | SALESMAN | 7698 | 1981-02-22 | 1250 |  500 |     30 |       1 | WARD         | sales@2017 | 7132300034 |        1 |
+|  7654 | MARTIN | M      | SALESMAN | 7698 | 1981-09-28 | 1250 | 1400 |     30 |       6 | LIFE RACER   | sales@2017 | 7132300050 |        1 |
+|  7844 | TURNER | M      | SALESMAN | 7698 | 1981-09-08 | 1500 |    0 |     30 |       5 | SAND DUST    | sales@2017 | NULL       |        1 |
+|  7900 | JAMES  | M      | CLERK    | 7698 | 1981-12-03 |  950 | NULL |     30 |       2 | CRAZY LEADER | sales@2017 | 7132300042 |        1 |
+|  7949 | ALEX   | M      | MANAGER  | 7698 | 1982-01-24 | 1250 |  500 |    
+
+26. Display the department no of all departments having more than 1 clerks
+mysql> SELECT DEPTNO FROM EMP WHERE JOB='CLERK' GROUP BY DEPTNO HAVING COUNT(*)>1;
++--------+
+| DEPTNO |
++--------+
+|     20 |
+|     10 |
+|     30 |
+
+27. Which employees earn less than 30% of the president’s salary?
+mysql> SELECT * FROM EMP WHERE SAL<0.3*(SELECT SAL FROM EMP WHERE JOB='PRESIDENT');
++-------+--------+--------+----------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+| EMPNO | ENAME  | GENDER | JOB            | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | PHONE      | isActive |
++-------+--------+--------+----------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+|  7369 | SMITH  | M      | CLERK          | 7902 | 1980-12-17 |  800 | NULL |     20 |       2 | TRITONE      | a12recmpm  | 7032300023 |        0 |
+|  7521 | WARD   | M      | SALESMAN       | 7698 | 1981-02-22 | 1250 |  500 |     30 |       1 | WARD         | sales@2017 | 7132300034 |        1 |
+|  7654 | MARTIN | M      | SALESMAN       | 7698 | 1981-09-28 | 1250 | 1400 |     30 |       6 | LIFE RACER   | sales@2017 | 7132300050 |        1 |
+|  7876 | ADAMS  | M      | CLERK          | 7788 | 1983-01-12 | 1100 | NULL |     20 |       1 | CRAZY ANYONE | a12recmpm  | 7132300086 |        1 |
+|  7889 | Neel   | M      | vice PRESIDENT | 7839 | 1983-08-09 | 1000 | NULL
+
+28. Display all employee names and the locations of their departments except ‘CHICAGO’
+mysql> SELECT E.ENAME,D.LOC FROM EMP E JOIN DEPT D ON E.DEPTNO=D.DEPTNO WHERE D.LOC<>'CHICAGO';
++----------+----------+
+| ENAME    | LOC      |
++----------+----------+
+| AARAV    | NEW YORK |
+| THOMAS   | NEW YORK |
+| CLARK    | NEW YORK |
+| KING     | NEW YORK |
+| MILLER   | NEW YORK |
+| SHARMIN  | DALLAS   |
+| BANDISH  | DALLAS   |
+| SMITH    | DALLAS   |
+
+
+29. Display department that has no employees
+
+mysql> SELECT * FROM DEPT WHERE DEPTNO NOT IN (SELECT DEPTNO FROM EMP);
++--------+------------+--------+---------+------------+
+| DEPTNO | DNAME      | LOC    | PWD     | STARTEDON  |
++--------+------------+--------+---------+------------+
+|      2 | 1          | 1      | 1       | 1          |
+|     40 | OPERATIONS | BOSTON | opr@123 | 12/07/1989 |
++--------+------------+--------+---------+------------+
+
+30. Display the products purchased by JOCK SPORTS which are not purchased by JUST TENNIS
+mysql> SELECT * FROM PRODUCT WHERE PRODID IN (SELECT PRODID FROM SALES WHERE CUSTNAME='JOCK SPORTS') AND PRODID NOT IN (SELECT PRODID FROM SALES WHERE CUSTNAME='JUST TENNIS');
+Empty set (0.08 sec)
+
+
+31. Write a query to find out the employees who are first to join their departmentsmysql> SELECT * FROM EMP E WHERE HIREDATE=(SELECT MIN(HIREDATE) FROM EMP WHERE DEPTNO=E.DEPTNO);
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+-----------+------------+------------+----------+
+| EMPNO | ENAME    | GENDER | JOB                 | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME | PWD        | PHONE      | isActive |
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+-----------+------------+------------+----------+
+|  6129 | VRUSHALI | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     50 |       1 | VRUSHALI  | PUN@8877   | NULL       |        1 |
+|  7369 | SMITH    | M      | CLERK               | 7902 | 1980-12-17 |  800 | NULL |     20 |       2 | TRITONE   | a12recmpm  | 7032300023 |        0 |
+|  7782 | CLARK    | M      | MANAGER             | 7839 | 1981-06-09 | 2450 | NULL |     10 |       3 | CLARK     | r50mpm     | 7032300001 |        1 |
+|  7888 | Ruhan    | M      | Network             | 7888 | 1983-08-09 | 2000 | NULL |     60 |       1 | Ruhan     | BRD@1122   | NULL       |        1 |
+32. Create a query to display the name, hiredate, and salary for all employees who have both
+the same salary and commission as Scott.
+mysql> SELECT ENAME,HIREDATE,SAL FROM EMP WHERE (SAL,COMM)=(SELECT SAL,COMM FROM EMP WHERE ENAME='SCOTT');
+Empty set (0.00 sec)
+
+
+33. List all the employees who have at least one person reporting to them.
+ysql> SELECT DISTINCT E.* FROM EMP E JOIN EMP S ON E.EMPNO=S.MGR;
++-------+---------+--------+-----------+------+------------+------+------+--------+---------+------------+------------+------------+----------+
+| EMPNO | ENAME   | GENDER | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME  | PWD        | PHONE      | isActive |
++-------+---------+--------+-----------+------+------------+------+------+--------+---------+------------+------------+------------+----------+
+|  7566 | JONES   | M      | MANAGER   | 7839 | 1981-04-02 | 2975 | NULL |     20 |       4 | HONEYCOMB  | a12recmpm  | 7132300039 |        1 |
+|  7698 | BLAKE   | M      | MANAGER   | 7839 | 1981-05-01 | 2850 | NULL |     30 |       1 | BIG BEN    | sales@2017 | 7132300027 |        1 |
+|  7782 | CLARK   | M      | MANAGER   | 7839 | 1981-06-09 | 2450 | NULL |     10 |       3 | CLARK      | r50mpm     | 7032300001 |        1 |
+|  7788 | SCOTT   | M      | ANALYST   | 7566 | 1982-12-09 | 3000 | NULL | 
+
+34. List the name of the employees with their immediate higher authority.
+mysql> SELECT E.ENAME,M.ENAME FROM EMP E LEFT JOIN EMP M ON E.MGR=M.EMPNO;
++----------+---------+
+| ENAME    | ENAME   |
++----------+---------+
+| GITA     | GRASS   |
+| VRUSHALI | GRASS   |
+| SHARMIN  | GRASS   |
+| BANDISH  | GRASS   |
+| SMITH    | FORD    |
+| AARAV    | FORD    |
+| THOMAS   | GRASS   |
+| ALLEN    | BLAKE   |
+| WARD     | BLAKE   |
+| JONES    | KING    |
+| MARTIN   | BLAKE   |
+
+35. List all the employees who do not manage any one.
+mysql> SELECT * FROM EMP WHERE EMPNO NOT IN (SELECT MGR FROM EMP WHERE MGR IS NOT NULL);
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+| EMPNO | ENAME    | GENDER | JOB                 | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | PHONE      | isActive |
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+|  6001 | GITA     | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     30 |       1 | GITA         | sales@2017 | NULL       |        1 |
+|  6129 | VRUSHALI | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     50 |       1 | VRUSHALI     | PUN@8877   | NULL       |        1 |
+|  6473 | SHARMIN  | F      | Public Relation     | 7920 | 1981-07-19 | 1750 | NULL |     20 |       1 | SHARMIN      | a12recmpm  | NULL       |        1 |
+|  6781 | BANDISH  | F      | Public Relation     | 7920 | 1981-07-19 | 1750 | NULL |     20 |       1 | BANDISH      | a12recmpm  | NULL       |        1 |
+|  7369 | SMITH    | M      | CLERK               | 7902 | 1980-12-17 |  800 | NULL |     20 |       2 | TRITONE      | a12recmpm  | 7032300023 |        0 |
+|  7415 | AARAV    | M      | CLERK               | 7902 | 1981-12-31 | 3350 | NULL |     10 |    NULL | AARAV        | NULL       | 7032300084 |        0 |
+
+36. Write a query to display a ‘*’ against the row of the most recently hired employee.
+
+mysql> SELECT * FROM EMP WHERE EMPNO NOT IN (SELECT MGR FROM EMP WHERE MGR IS NOT NULL);
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+| EMPNO | ENAME    | GENDER | JOB                 | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | PHONE      | isActive |
++-------+----------+--------+---------------------+------+------------+------+------+--------+---------+--------------+------------+------------+----------+
+|  6001 | GITA     | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     30 |       1 | GITA         | sales@2017 | NULL       |        1 |
+|  6129 | VRUSHALI | F      | Compliance officers | 7920 | 1981-07-19 | 1750 | NULL |     50 |       1 | VRUSHALI     | PUN@8877   | NULL       |        1 |
+|  6473 | SHARMIN  | F      | Public Relation     | 7920 | 1981-07-19 | 1750 | NULL |     20 |       1 | SHARMIN      | a12recmpm  | NULL       |        1 |
+|  6781 | BANDISH  | F      | Public Relation     | 7920 | 1981-07-19 | 1750 | NULL |     20 |       1 | BANDISH      | a12recmpm  | NULL       |        1 |
+|  7369 | SMITH    | M      | CLERK               | 7902 | 1980-12-17 |  800
+
+37. Write a correlated sub-query to list out the employees who earn more than the average
+mysql> SELECT ENAME,CASE WHEN HIREDATE=(SELECT MAX(HIREDATE) FROM EMP) THEN '*' ELSE '' END FROM EMP;
++----------+-------------------------------------------------------------------------+
+| ENAME    | CASE WHEN HIREDATE=(SELECT MAX(HIREDATE) FROM EMP) THEN '*' ELSE '' END |
++----------+-------------------------------------------------------------------------+
+| GITA     |                                                                         |
+| VRUSHALI |                                                                         |
+| SHARMIN  |                                                                         |
+| BANDISH  |                                                                         |
+
+9salary of their department.
+mysql> SELECT * FROM EMP E WHERE SAL>(SELECT AVG(SAL) FROM EMP WHERE DEPTNO=E.DEPTNO);
++-------+---------+--------+----------------+------+------------+------+------+--------+---------+------------+------------+------------+----------+
+| EMPNO | ENAME   | GENDER | JOB            | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME  | PWD        | PHONE      | isActive |
++-------+---------+--------+----------------+------+------------+------+------+--------+---------+------------+------------+------------+----------+
+|  7415 | AARAV   | M      | CLERK          | 7902 | 1981-12-31 | 3350 | NULL |     10 |    NULL | AARAV      | NULL       | 7032300084 |        0 |
+|  7566 | JONES   | M      | MANAGER        | 7839 | 1981-04-02 | 2975 | NULL |     20 |       4 | HONEYCOMB  | a12recmpm  | 7132300039 |        1 |
+|  7698 | BLAKE   | M      | MANAGER        | 7839 | 1981-05-01 | 2850 | NULL |     30 |       1 | BIG BEN    | sales@2017 | 7132300027 |        1 |
+|  7788 | SCOTT   | M      | ANALYST        | 7566 | 1982-12-09 | 3000 | NULL |     20 |       3 | WHITE SAND | a12recmpm  | NULL       |        1 |
+
+
+38. Find the 2nd maximum salary.
+mysql> SELECT MAX(SAL) FROM EMP WHERE SAL<(SELECT MAX(SAL) FROM EMP);
++----------+
+| MAX(SAL) |
++----------+
+|     4150 |
++----------+
+
+39. Select the duplicate records (Records, which are inserted, that already exist) in the EMP
+Table.
+mysql> SELECT EMPNO,COUNT(*) FROM EMP GROUP BY EMPNO HAVING COUNT(*)>1;
+Empty set (0.00 sec)
+
+
+40. List the Employees in Deptno 10 other than King.
+
+mysql> select * from emp where deptno=10 and ename <>'KING';
++-------+--------+--------+---------+------+------------+------+------+--------+---------+-------------+--------+------------+----------+
+| EMPNO | ENAME  | GENDER | JOB     | MGR  | HIREDATE   | SAL  | COMM | DEPTNO | BONUSID | USER NAME   | PWD    | PHONE      | isActive |
++-------+--------+--------+---------+------+------------+------+------+--------+---------+-------------+--------+------------+----------+
+|  7415 | AARAV  | M      | CLERK   | 7902 | 1981-12-31 | 3350 | NULL |     10 |    NULL | AARAV       | NULL   | 7032300084 |        0 |
+|  7421 | THOMAS | M      | CLERK   | 7920 | 1981-07-19 | 1750 | NULL |     10 |       1 | THOMAS      | r50mpm | 7032300011 |        0 |
+|  7782 | CLARK  | M      | MANAGER | 7839 | 1981-06-09 | 2450 | NULL |     10 |       3 | CLARK       | r50mpm | 7032300001 |        1 |
+|  7934 | MILLER | M      | CLERK   | 7782 | 1982-01-23 | 1300 | 1300 |     10 |       2 | QUARTERNOTE | r50mpm | 7132300055 |        0 |
++-------+--------+--------+---------+------+------------+------+----
+
+
+

@@ -1,0 +1,200 @@
+Assignment 5 - SELECT Command With Join Command
+
+
+1. Display Name of the salesperson, customer name and amount of sales.
+Query:
+mysql> select sp.sname,s.custname,s.amount from sales s join salesperson sp on s.repid=sp.sid;
+Empty set (0.04 sec)
+
+
+
+2. List employee name and name of managers.
+Query:
+mysql> select e.ename Employee,m.ename Manager from emp e left join emp m on e.mgr=m.empno;
++----------+---------+
+| Employee | Manager |
++----------+---------+
+| GITA     | GRASS   |
+| VRUSHALI | GRASS   |
+| SHARMIN  | GRASS   |
+| BANDISH  | GRASS   |
+| SMITH    | FORD    |
+| AARAV    | FORD    |
+| THOMAS   | GRASS   |
+| ALLEN    | BLAKE   |
+| WARD     | BLAKE   |
+| JONES    | KING    |
+| MARTIN   | BLAKE   |
+| BLAKE    | KING    |
+| CLARK    | KING    |
+| SCOTT    | JONES   |
+| KING     | NULL    |
+| FRED     | KING    |
+| TURNER   | BLAKE   |
+| ADAMS    | SCOTT   |
+| Ruhan    | Ruhan   |
+| Neel     | KING    |
+| JAMES    | BLAKE   |
+| FORD     | JONES   |
+| HOFFMAN  | JONES   |
+| GRASS    | HOFFMAN |
+| MILLER   | CLARK   |
+| AARUSH   | FORD    |
+| ALEX     | BLAKE   |
+| NATASHA  | GRASS   |
+| SANGITA  | GRASS   |
+| SUPRIYA  | GRASS   |
++----------+---------+
+
+
+3. Display details of all departments and the corresponding employees
+Query:
+
+mysql> select d.deptno,d.dname,e.ename from dept d left join emp e on d.deptno=e.deptno;
++--------+------------+----------+
+| deptno | dname      | ename    |
++--------+------------+----------+
+|     10 | ACCOUNTING | AARAV    |
+|     10 | ACCOUNTING | THOMAS   |
+|     10 | ACCOUNTING | CLARK    |
+|     10 | ACCOUNTING | KING     |
+|     10 | ACCOUNTING | MILLER   |
+|     20 | RESEARCH   | SHARMIN  |
+|     20 | RESEARCH   | BANDISH  |
+|     20 | RESEARCH   | SMITH    |
+|     20 | RESEARCH   | JONES    |
+|     20 | RESEARCH   | SCOTT    |
+|     20 | RESEARCH   | FRED     |
+|     20 | RESEARCH   | ADAMS    |
+|     20 | RESEARCH   | FORD     |
+|     30 | SALES      | GITA     |
+|     30 | SALES      | ALLEN    |
+|     30 | SALES      | WARD     |
+|     30 | SALES      | MARTIN   |
+|     30 | SALES      | BLAKE    |
+|     30 | SALES      | TURNER   |
+|     30 | SALES      | JAMES    |
+|     30 | SALES      | HOFFMAN  |
+|     30 | SALES      | GRASS    |
+|     30 | SALES      | AARUSH   |
+|     30 | SALES      | ALEX     |
+|     30 | SALES      | NATASHA  |
+|     40 | OPERATIONS | NULL     |
+|     50 | HR         | VRUSHALI |
+|     50 | HR         | SANGITA  |
+|     50 | HR         | SUPRIYA  |
+|     60 | IT         | Ruhan    |
+|     60 | IT         | Neel     |
++--------+------------+----------+
+
+
+
+4. Display all customer names with their order details (order number and ship date) for the orders shipped in 1987.
+Query:
+mysql> select distinct s.custname,o.ordid,o.shipdate from sales s join ord o on s.custid=o.custid where year(o.shipdate)=1987;
++----------------+-------+------------+
+| custname       | ordid | shipdate   |
++----------------+-------+------------+
+| TKB SPORT SHOP |   610 | 1987-01-08 |
+| VOLLYRITE      |   611 | 1987-01-11 |
+| EVERY MOUNTAIN |   612 | 1987-01-20 |
+| NORTH WOODS    |   613 | 1987-02-01 |
+| VOLLYRITE      |   614 | 1987-02-05 |
+| WOMENS SPORTS  |   615 | 1987-02-06 |
+| JUST TENNIS    |   616 | 1987-02-10 |
+| K + T SPORTS   |   617 | 1987-03-03 |
+| VOLLYRITE      |   618 | 1987-03-06 |
+| EVERY MOUNTAIN |   619 | 1987-02-04 |
+| JOCKSPORTS     |   620 | 1987-03-12 |
+| JOCKSPORTS     |   621 | 1987-03-01 |
+| K + T SPORTS   |   622 | 1987-01-01 |
+| K + T SPORTS   |   624 | 1987-01-06 |
+| K + T SPORTS   |   625 | 1987-01-10 |
+| WOMENS SPORTS  |   626 | 1987-02-01 |
+| JOCKSPORTS     |   627 | 1987-02-14 |
+| JOCKSPORTS     |   628 | 1987-03-14 |
+| JOCKSPORTS     |   629 | 1987-03-16 |
+| EVERY MOUNTAIN |   630 | 1987-02-22 |
+| EVERY MOUNTAIN |   631 | 1987-02-23 |
++----------------+-------+------------+
+
+
+
+5. Display salesman names and names of customers they are dealing with.
+Query:
+mysql> select distinct sp.sname,s.custname from sales s join salesperson sp on s.repid=sp.sid;
+Empty set (0.01 sec)
+
+
+6. Display salesman who did not earn commission, with customer names whom they are dealing with.
+Query:
+mysql> select distinct sp.sname,s.custname from sales s join salesperson sp on s.repid=sp.sid join emp e on sp.sid=e.empno where e.comm is null or e.comm=0;
+Empty set (0.00 sec)
+
+
+
+7. Display salesman names, salary, commission and their salary grades.
+Query:
+mysql> select ename,sal,comm,case when sal<=1000 then 1 when sal<=2000 then 2 when sal<=3000 then 3 else 4 end as grade from emp where job='SALESMAN';
++--------+------+------+-------+
+| ename  | sal  | comm | grade |
++--------+------+------+-------+
+| ALLEN  | 1600 |  300 |     2 |
+| WARD   | 1250 |  500 |     2 |
+| MARTIN | 1250 | 1400 |     2 |
+| TURNER | 1500 |    0 |     2 |
+| GRASS  | 2575 | 2700 |     3 |
+| AARUSH | 1350 | 2700 |     2 |
++--------+------+------+-------+
+
+
+
+8. Display all Tennis products and their price details (standard and minimum price).
+Query:
+mysql> select prodname,avg(amount) as standard_price,min(amount) as min_price from sales where prodname like '%TENNIS%' group by prodname;
++-------------------------+----------------+-----------+
+| prodname                | standard_price | min_price |
++-------------------------+----------------+-----------+
+| ACE TENNIS BALLS-3 PACK |     904.483333 |      8.40 |
+| ACE TENNIS RACKET I     |    3690.666667 |     35.00 |
+| ACE TENNIS NET          |    5879.600000 |     50.00 |
+| ACE TENNIS RACKET II    |    1258.500000 |     84.00 |
+| RH: "GUIDE TO TENNIS"   |     604.350000 |     34.00 |
+| ACE TENNIS BALLS-6 PACK |    2011.360000 |    250.00 |
+| SP TENNIS RACKET        |    2408.000000 |     24.00 |
++-------------------------+----------------+-----------+
+
+
+
+9. Display the products purchased by either JOCKSPORTS (customer number 100) or JUST TENNIS (customer number 103) or both of them.
+Query:
+mysql> select distinct prodname from sales where custid in(100,103);
++-------------------------+
+| prodname                |
++-------------------------+
+| RH: "GUIDE TO TENNIS"   |
+| ACE TENNIS RACKET II    |
+| ACE TENNIS BALLS-3 PACK |
+| ACE TENNIS NET          |
+| ACE TENNIS RACKET I     |
+| SB ENERGY BAR-6 PACK    |
++-------------------------+
+
+
+
+10.Display the department name, and salary of any employee whose salary and commission matches both the salary and commission of any employee in DALLAS.
+Query:
+mysql> select d.dname,e.sal from emp e join dept d on e.deptno=d.deptno where (e.sal,e.comm) in (select e2.sal,e2.comm from emp e2 join dept d2 on e2.deptno=d2.deptno where d2.loc='Dallas');
+Empty set (0.01 sec)
+
+
+
+11. List out the common jobs in Research and Accounting Departments in ascending order.
+Query:
+mysql> Select distinct Job from emp where deptno=20 and job in(Select Job from emp where deptno=10) order by job;
++---------+
+| Job     |
++---------+
+| CLERK   |
+| MANAGER |
++---------+
